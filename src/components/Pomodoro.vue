@@ -29,6 +29,7 @@
       >
         <v-card
           color="basil"
+          class="text-center pa-10"
           flat
         >
           <div class="text-h1 font-weight-bold">
@@ -54,7 +55,7 @@
               </v-btn>
             </v-col>
             <v-col cols="4" sm="4" md="4">
-              <v-btn  @click="reset()"
+              <v-btn  @click="reset(tab)"
               rounded="sm" 
               size="x-large" 
               class="bg-black">
@@ -76,7 +77,6 @@ export default {
       tabTitles: ['Pomodoro', 'Short Break', 'Long Break'],
       timerInstance: null,
       totalSecond: 25 * 60,
-      timerType: 0
     }
   },
   computed: {
@@ -87,12 +87,15 @@ export default {
     displaySeconds() {
       let seconds= this.totalSecond % 60;
       return this.formatTime(seconds)
+    },
+  },
+  watch: {
+    tab(newVal) {
+      this.reset(newVal);
     }
   },
   methods: {
     formatTime(time) {
-      console.log('formatmethod');
-      console.log(time);
       if (time < 10) {
         return '0'+ time
       }
@@ -107,8 +110,15 @@ export default {
     stop() {
       clearInterval(this.timerInstance)
     },
-    reset() {
-      this.totalSecond= 25 * 60
+    reset(tab) {
+      console.log('change tab');
+      if (tab === 'Pomodoro') {
+        this.totalSecond= 25 * 60
+      }else if (tab === 'Short Break') {
+        this.totalSecond= 5 * 60
+      }else {
+        this.totalSecond= 15 * 60
+      }
     },
   },
   
